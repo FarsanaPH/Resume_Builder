@@ -2,7 +2,7 @@
 
 A **React-powered** web application that helps users create professional resumes quickly and easily.
 
-**Create a job-winning resume in minutes — live preview, best templates, and instant download!**
+**Create job-winning resume in minutes — live preview, best templates, and instant download!**
 
 This project simplifies the resume creation process for job seekers — allowing them to focus on their content, while the app handles formatting, structure, and PDF export.
 
