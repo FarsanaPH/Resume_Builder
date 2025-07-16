@@ -29,6 +29,6 @@ This project is built using **MERN stack** and modern frontend tools:
 - **Material UI** 
 - **Vite**
 
+---
 
-> _“Great code speaks for itself — but a clean resume helps too!”_  
-> **Thanks for visiting the project.** 😊
+> _“Great code speaks for itself — but a clean resume helps too!”_  — **Thanks for visiting the project.** 😊
