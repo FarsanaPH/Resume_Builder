@@ -7,7 +7,7 @@ A **React-powered** web application that helps users create professional resumes
 This project simplifies the resume creation process for job seekers — allowing them to focus on their content, while the app handles formatting, structure, and PDF export.
 
 
-## ✨ Features
+## Features
 
 - **Live Resume Preview**
 - **Download Resume as PDF**
@@ -16,12 +16,19 @@ This project simplifies the resume creation process for job seekers — allowing
 - **Responsive Design** 
 
 
-## 🛠️ Tech Stack
+## Tech Stack
 
-**React**   
-**React Router**
-**Bootstrap** 
-**Material UI**
-**Vite**    
+This project is built using **MERN stack** and modern frontend tools:
 
->“Great code speaks for itself — but a clean resume helps too!” Thanks for visiting the project
+- **MongoDB**
+- **Express.js**
+- **React** 
+- **Node.js** 
+- **JavaScript (ES6+)**
+- **Bootstrap** 
+- **Material UI** 
+- **Vite**
+
+
+> _“Great code speaks for itself — but a clean resume helps too!”_  
+> **Thanks for visiting the project.** 😊
