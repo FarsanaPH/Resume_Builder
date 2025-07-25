@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -8,9 +8,27 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 
-const steps = ['Basic Information', 'Contact Details', 'Education Details', 'Work Experience', 'Skills & Certifications', 'Review & Submit'];
+const steps = ['Basic Information',
+    'Contact Details',
+    'Education Details',
+    'Work Experience',
+    'Skills & Certifications',
+    'Review & Submit'];
 
-function StepperComponent() {
+function StepperComponent({ resumeData, setResumeData }) {
+    console.log(resumeData);
+
+    const [inputSkill, setInputSkill] = useState("")
+    console.log(inputSkill);
+
+    const addSkill = (skill) => {
+        console.log(skill);
+
+    }
+
+    const suggestion = ["REACT", "ANGULAR", "NODE JS", "EXPRESS", "JAVASCRIPT", "MONGO DB", "GIT", "HTML", "CSS", "BOOTSTRAP", "TAILWIND"]
+
+
     const [activeStep, setActiveStep] = React.useState(0);
     const [skipped, setSkipped] = React.useState(new Set());
 
@@ -56,15 +74,18 @@ function StepperComponent() {
         setActiveStep(0);
     };
 
-    // from array steps
-    const renderStepperContent = (steps) => {
-        switch (steps) {
+    // The called renderStepperContent function from below which is seen on webpage
+    // if we click NEXT, setactivesteps  increments and when we click BACk, setactivesteps decrements
+    const renderStepperContent = (stepIndex) => {
+        switch (stepIndex) {
             case 0: return (
                 <>
                     <h5>Personal Information</h5>
                     <Grid container spacing={2}>
                         <Grid size={12}>
                             <TextField
+                                onChange={(e) => setResumeData({ ...resumeData, name: e.target.value })}
+                                value={resumeData.name}
                                 label="Full Name"
                                 maxRows={4}
                                 variant="standard"
@@ -73,6 +94,8 @@ function StepperComponent() {
                         </Grid>
                         <Grid size={12}>
                             <TextField
+                                onChange={(e) => setResumeData({ ...resumeData, jobTitle: e.target.value })}
+                                value={resumeData.jobTitle}
                                 label="Job Title"
                                 maxRows={4}
                                 variant="standard"
@@ -81,6 +104,8 @@ function StepperComponent() {
                         </Grid>
                         <Grid size={12}>
                             <TextField
+                                onChange={(e) => setResumeData({ ...resumeData, location: e.target.value })}
+                                value={resumeData.location}
                                 label="Location"
                                 maxRows={4}
                                 variant="standard"
@@ -98,6 +123,8 @@ function StepperComponent() {
                     <Grid container spacing={2}>
                         <Grid size={12}>
                             <TextField
+                                onChange={(e) => setResumeData({ ...resumeData, email: e.target.value })}
+                                value={resumeData.email}
                                 label="Email"
                                 maxRows={4}
                                 variant="standard"
@@ -106,6 +133,8 @@ function StepperComponent() {
                         </Grid>
                         <Grid size={12}>
                             <TextField
+                                onChange={(e) => setResumeData({ ...resumeData, phoneNumber: e.target.value })}
+                                value={resumeData.phoneNumber}
                                 label="Phone Number"
                                 maxRows={4}
                                 variant="standard"
@@ -114,6 +143,8 @@ function StepperComponent() {
                         </Grid>
                         <Grid size={12}>
                             <TextField
+                                onChange={(e) => setResumeData({ ...resumeData, github: e.target.value })}
+                                value={resumeData.github}
                                 label="GitHub Profile Link"
                                 maxRows={4}
                                 variant="standard"
@@ -122,6 +153,8 @@ function StepperComponent() {
                         </Grid>
                         <Grid size={12}>
                             <TextField
+                                onChange={(e) => setResumeData({ ...resumeData, linkedIn: e.target.value })}
+                                value={resumeData.linkedIn}
                                 label="LinkedIn Profile Link"
                                 maxRows={4}
                                 variant="standard"
@@ -130,6 +163,8 @@ function StepperComponent() {
                         </Grid>
                         <Grid size={12}>
                             <TextField
+                                onChange={(e) => setResumeData({ ...resumeData, portfolio: e.target.value })}
+                                value={resumeData.portfolio}
                                 label="Portfolio Link"
                                 maxRows={4}
                                 variant="standard"
@@ -145,6 +180,8 @@ function StepperComponent() {
                     <Grid container spacing={2}>
                         <Grid size={12}>
                             <TextField
+                                onChange={(e) => setResumeData({ ...resumeData, courseName: e.target.value })}
+                                value={resumeData.courseName}
                                 label="Course Name"
                                 maxRows={4}
                                 variant="standard"
@@ -153,6 +190,8 @@ function StepperComponent() {
                         </Grid>
                         <Grid size={12}>
                             <TextField
+                                onChange={(e) => setResumeData({ ...resumeData, college: e.target.value })}
+                                value={resumeData.college}
                                 label="College Name"
                                 maxRows={4}
                                 variant="standard"
@@ -161,6 +200,8 @@ function StepperComponent() {
                         </Grid>
                         <Grid size={12}>
                             <TextField
+                                onChange={(e) => setResumeData({ ...resumeData, university: e.target.value })}
+                                value={resumeData.university}
                                 label="University"
                                 maxRows={4}
                                 variant="standard"
@@ -169,6 +210,8 @@ function StepperComponent() {
                         </Grid>
                         <Grid size={12}>
                             <TextField
+                                onChange={(e) => setResumeData({ ...resumeData, year: e.target.value })}
+                                value={resumeData.year}
                                 label="Year of Passout"
                                 maxRows={4}
                                 variant="standard"
@@ -184,6 +227,8 @@ function StepperComponent() {
                     <Grid container spacing={2}>
                         <Grid size={12}>
                             <TextField
+                                onChange={(e) => setResumeData({ ...resumeData, jobRole: e.target.value })}
+                                value={resumeData.jobRole}
                                 label="Job or Internship"
                                 maxRows={4}
                                 variant="standard"
@@ -192,6 +237,8 @@ function StepperComponent() {
                         </Grid>
                         <Grid size={12}>
                             <TextField
+                                onChange={(e) => setResumeData({ ...resumeData, company: e.target.value })}
+                                value={resumeData.company}
                                 label="Company Name"
                                 maxRows={4}
                                 variant="standard"
@@ -200,6 +247,8 @@ function StepperComponent() {
                         </Grid>
                         <Grid size={12}>
                             <TextField
+                                onChange={(e) => setResumeData({ ...resumeData, companyLocation: e.target.value })}
+                                value={resumeData.companyLocation}
                                 label="Location"
                                 maxRows={4}
                                 variant="standard"
@@ -208,6 +257,8 @@ function StepperComponent() {
                         </Grid>
                         <Grid size={12}>
                             <TextField
+                                onChange={(e) => setResumeData({ ...resumeData, duration: e.target.value })}
+                                value={resumeData.duration}
                                 label="Duration"
                                 maxRows={4}
                                 variant="standard"
@@ -221,26 +272,24 @@ function StepperComponent() {
                 <>
                     <h3>Skills & Certifications</h3>
                     <TextField
+                        onChange={(e) => setInputSkill(e.target.value)}
                         label="Add Skill"
                         maxRows={4}
                         variant="standard"
                         multiline
                         fullWidth
                     />
-                    <Button className='btn btn-primary mt-3' variant='outlined'>ADD+</Button>
+                    <Button onClick={() => addSkill(inputSkill)} className='btn btn-primary mt-3' variant='outlined'>ADD+</Button>
+
                     <div className="mt-3">
                         <h5>Suggestions :</h5>
-                        <Button className='btn btn-primary mt-3 me-2' variant='outlined'>REACT</Button>
-                        <Button className='btn btn-primary mt-3 me-2' variant='outlined'>ANGULAR</Button>
-                        <Button className='btn btn-primary mt-3 me-2' variant='outlined'>NODE JS</Button>
-                        <Button className='btn btn-primary mt-3 me-2' variant='outlined'>EXPRESS</Button>
-                        <Button className='btn btn-primary mt-3 me-2' variant='outlined'>MONGODB</Button>
-                        <Button className='btn btn-primary mt-3 me-2' variant='outlined'>GIT</Button>
-                        <Button className='btn btn-primary mt-3 me-2' variant='outlined'>HTML</Button>
-                        <Button className='btn btn-primary mt-3 me-2' variant='outlined'>CSS</Button>
-                        <Button className='btn btn-primary mt-3 me-2' variant='outlined'>BOOTSTRAP</Button>
-                        <Button className='btn btn-primary mt-3 me-2' variant='outlined'>TAILWIND</Button>
+                        {
+                            suggestion?.map((item) => (
+                                <Button onClick={() => addSkill(item)} className='btn btn-primary mt-3 me-2' variant='outlined'>{item}</Button>
+                            ))
+                        }
                     </div>
+
                     <div className="mt-3">
                         <h5>Added Skills:</h5>
                     </div>
@@ -252,6 +301,8 @@ function StepperComponent() {
                     <Grid container spacing={2}>
                         <Grid size={12}>
                             <TextField
+                                onChange={(e) => setResumeData({ ...resumeData, summary: e.target.value })}
+                                value={resumeData.summary}
                                 label="Write a short summary of yourself"
                                 variant="standard"
                                 fullWidth
@@ -268,8 +319,9 @@ function StepperComponent() {
     }
     return (
         <>
-            <Box sx={{ width: '100%', marginBottom:"55%" }}>
+            <Box sx={{ width: '100%', marginBottom: "55%" }}>
                 <Stepper activeStep={activeStep}>
+                    {/* here used the array steps */}
                     {steps.map((label, index) => {
                         const stepProps = {};
                         const labelProps = {};
@@ -301,7 +353,7 @@ function StepperComponent() {
                 ) : (
                     <React.Fragment>
                         <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
-                        {/* this is where we chnge to see on the webpage */}
+                        {/* This is where we change to see on the webpage */}
                         {renderStepperContent(activeStep)}
                         <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                             <Button
