@@ -7,6 +7,10 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
+import { TiDelete } from "react-icons/ti";
+import { FaCheckCircle } from "react-icons/fa";
+import { addResumeAPI } from '../Service/allApi';
+
 
 const steps = ['Basic Information',
     'Contact Details',
@@ -17,13 +21,43 @@ const steps = ['Basic Information',
 
 function StepperComponent({ resumeData, setResumeData }) {
     console.log(resumeData);
+    const { skills } = resumeData //destructing  means skills=resumeData.skills
+    console.log("skill is", skills);
+
 
     const [inputSkill, setInputSkill] = useState("")
-    console.log(inputSkill);
+    console.log("inputting skill is", inputSkill);
 
-    const addSkill = (skill) => {
-        console.log(skill);
+    const addSkill = (addSkill) => {
+        console.log("added skills from add function is:", addSkill);
+        if (!addSkill) { //ie, null,undefined or empty string added
+            alert(`Enter Skill!!`)
+        }
+        else {
+            if (skills.includes(addSkill)) {
+                alert(`Skill already added...`)
+            } else {
+                setResumeData({ ...resumeData, skills: [...skills, addSkill] })
+            }
+            setInputSkill("")
+        }
+    }
 
+    const deleteSkill = (itemToDelete) => {
+        console.log("deleting skill:", itemToDelete);
+        setResumeData({ ...resumeData, skills: skills.filter(item => item !== itemToDelete) })
+    }
+
+
+    const [showSuccess, setShowSuccess] = useState(false);
+
+    const handleSubmitResume = async () => {
+        const result = await addResumeAPI(resumeData) //API calling
+        console.log("backend db.json stored data:", result);
+
+        // Show success popup
+        setShowSuccess(true);
+        setTimeout(() => setShowSuccess(false), 1500); // hide after 2 seconds
     }
 
     const suggestion = ["REACT", "ANGULAR", "NODE JS", "EXPRESS", "JAVASCRIPT", "MONGO DB", "GIT", "HTML", "CSS", "BOOTSTRAP", "TAILWIND"]
@@ -273,6 +307,7 @@ function StepperComponent({ resumeData, setResumeData }) {
                     <h3>Skills & Certifications</h3>
                     <TextField
                         onChange={(e) => setInputSkill(e.target.value)}
+                        value={inputSkill}
                         label="Add Skill"
                         maxRows={4}
                         variant="standard"
@@ -292,6 +327,16 @@ function StepperComponent({ resumeData, setResumeData }) {
 
                     <div className="mt-3">
                         <h5>Added Skills:</h5>
+                        {
+                            skills?.length > 0 ?
+                                skills?.map((item) => (
+                                    <span className='btn btn-primary mb-3 me-3'>{item}
+                                        <button onClick={() => deleteSkill(item)} className='btn btn-primary'>
+                                            <TiDelete />
+                                        </button>
+                                    </span>
+                                )) : ""
+                        }
                     </div>
                 </>
             );
@@ -315,8 +360,9 @@ function StepperComponent({ resumeData, setResumeData }) {
             );
             default: return null;
         }
-
     }
+
+    
     return (
         <>
             <Box sx={{ width: '100%', marginBottom: "55%" }}>
@@ -345,9 +391,9 @@ function StepperComponent({ resumeData, setResumeData }) {
                         <Typography sx={{ mt: 2, mb: 1 }}>
                             All steps completed - you&apos;re finished
                         </Typography>
-                        <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                            <Box sx={{ flex: '1 1 auto' }} />
-                            <Button onClick={handleReset}>Reset</Button>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 2 }}>
+                            <button onClick={handleReset} className='btn btn-danger'>RESET</button>
+                            <button onClick={handleSubmitResume} className='btn btn-success'>SUBMIT RESUME</button>
                         </Box>
                     </React.Fragment>
                 ) : (
@@ -377,6 +423,15 @@ function StepperComponent({ resumeData, setResumeData }) {
                     </React.Fragment>
                 )}
             </Box>
+
+            {showSuccess && (
+                <div className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-50" style={{ zIndex: 1050 }}>
+                    <div className="bg-success text-white p-4 rounded text-center shadow">
+                        <FaCheckCircle size={60} className="mb-3 bg-white text-success rounded-circle p-1" />
+                        <h5>Resume Submitted Successfully!</h5>
+                    </div>
+                </div>
+            )}
         </>
     );
 }
