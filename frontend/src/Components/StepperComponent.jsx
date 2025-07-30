@@ -10,6 +10,7 @@ import Grid from '@mui/material/Grid';
 import { TiDelete } from "react-icons/ti";
 import { FaCheckCircle } from "react-icons/fa";
 import { addResumeAPI } from '../Service/allApi';
+import { toast } from 'react-toastify';
 
 
 const steps = ['Basic Information',
@@ -19,27 +20,29 @@ const steps = ['Basic Information',
     'Skills & Certifications',
     'Review & Submit'];
 
-function StepperComponent({ resumeData, setResumeData }) {
+function StepperComponent({ resumeData, setResumeData, setIsSubmitted }) {
     console.log(resumeData);
-    const { skills } = resumeData //destructing  means skills=resumeData.skills
-    console.log("skill is", skills);
 
+    //destructing  means skills=resumeData.skills
+    const { skills, name, jobTitle, location, email, phoneNumber, github, linkedIn, portfolio, courseName, college, university, year, jobRole, company, companyLocation, duration, summary } = resumeData
+    console.log("skill is", skills);
 
     const [inputSkill, setInputSkill] = useState("")
     console.log("inputting skill is", inputSkill);
 
     const addSkill = (addSkill) => {
         console.log("added skills from add function is:", addSkill);
-        if (!addSkill) { //ie, null,undefined or empty string added
-            alert(`Enter Skill!!`)
-        }
-        else {
-            if (skills.includes(addSkill)) {
-                alert(`Skill already added...`)
+
+        const upperSkill = addSkill.trim().toUpperCase(); // convert input to uppercase and trim spaces
+        if (!upperSkill) {  //ie, null,undefined or empty string added
+            toast.warning(`Enter Skill!!`);
+        } else {
+            if (skills.includes(upperSkill)) {
+                toast.warning(`Skill already added...`);
             } else {
-                setResumeData({ ...resumeData, skills: [...skills, addSkill] })
+                setResumeData({ ...resumeData, skills: [...skills, upperSkill] });
+                setInputSkill("");
             }
-            setInputSkill("")
         }
     }
 
@@ -51,13 +54,36 @@ function StepperComponent({ resumeData, setResumeData }) {
 
     const [showSuccess, setShowSuccess] = useState(false);
 
+    // this function do api call to submit resume to backend db.json
     const handleSubmitResume = async () => {
-        const result = await addResumeAPI(resumeData) //API calling
-        console.log("backend db.json stored data:", result);
+        if (!skills || !name || !jobTitle || !location || !email || !phoneNumber ||
+            !github || !linkedIn || !portfolio || !courseName || !college || !university ||
+            !year || !jobRole || !company || !companyLocation || !duration || !summary) {
+            toast.warning(`Fill the form completely!!`)
+        } else {
+            try {
+                const result = await addResumeAPI(resumeData) //addResumeAPI is function in allApi.js in service
+                console.log("backend db.json stored data:", result);
 
-        // Show success popup
-        setShowSuccess(true);
-        setTimeout(() => setShowSuccess(false), 1500); // hide after 2 seconds
+                if (result.status >= 200 && result.status < 300) {
+                    setShowSuccess(true); // show popup
+
+                    // Delay navigation to only Preview Page so popup is visible
+                    setTimeout(() => {
+                        setShowSuccess(false); // Hide popup
+                        setIsSubmitted(true);   // THEN show only Preview-(Form.js logic)
+                    }, 1500); // show for 1.5 seconds
+
+                } else {
+                    toast.error(`Failed in Adding Resume, Please Try Again!!`)
+                }
+
+            } catch (err) {
+                console.log(`Server Error: ${err}`);
+                toast.error(`Server Error, Please Try Again!!`)
+            }
+        }
+
     }
 
     const suggestion = ["REACT", "ANGULAR", "NODE JS", "EXPRESS", "JAVASCRIPT", "MONGO DB", "GIT", "HTML", "CSS", "BOOTSTRAP", "TAILWIND"]
@@ -106,6 +132,26 @@ function StepperComponent({ resumeData, setResumeData }) {
 
     const handleReset = () => {
         setActiveStep(0);
+        setResumeData({
+            name: "",
+            jobTitle: "",
+            location: "",
+            email: "",
+            phoneNumber: "",
+            github: "",
+            linkedIn: "",
+            portfolio: "",
+            courseName: "",
+            college: "",
+            university: "",
+            year: "",
+            jobRole: "",
+            company: "",
+            companyLocation: "",
+            duration: "",
+            skills: [],
+            summary: ""
+        })
     };
 
     // The called renderStepperContent function from below which is seen on webpage
@@ -330,7 +376,8 @@ function StepperComponent({ resumeData, setResumeData }) {
                         {
                             skills?.length > 0 ?
                                 skills?.map((item) => (
-                                    <span className='btn btn-primary mb-3 me-3'>{item}
+                                    <span className='btn btn-primary mb-3 me-3'>
+                                        {item} {/*items in skill array*/}
                                         <button onClick={() => deleteSkill(item)} className='btn btn-primary'>
                                             <TiDelete />
                                         </button>
@@ -362,7 +409,7 @@ function StepperComponent({ resumeData, setResumeData }) {
         }
     }
 
-    
+
     return (
         <>
             <Box sx={{ width: '100%', marginBottom: "55%" }}>
@@ -393,6 +440,7 @@ function StepperComponent({ resumeData, setResumeData }) {
                         </Typography>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 2 }}>
                             <button onClick={handleReset} className='btn btn-danger'>RESET</button>
+                            {/* this function handleSubmitResume do api call to addresume to db.json   */}
                             <button onClick={handleSubmitResume} className='btn btn-success'>SUBMIT RESUME</button>
                         </Box>
                     </React.Fragment>
