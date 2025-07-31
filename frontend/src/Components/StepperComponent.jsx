@@ -20,7 +20,7 @@ const steps = ['Basic Information',
     'Skills & Certifications',
     'Review & Submit'];
 
-function StepperComponent({ resumeData, setResumeData, setIsSubmitted }) {
+function StepperComponent({ resumeData, setResumeData, setIsSubmitted, setEditID }) {
     console.log(resumeData);
 
     //destructing  means skills=resumeData.skills
@@ -63,7 +63,8 @@ function StepperComponent({ resumeData, setResumeData, setIsSubmitted }) {
         } else {
             try {
                 const result = await addResumeAPI(resumeData) //addResumeAPI is function in allApi.js in service
-                console.log("backend db.json stored data:", result);
+                console.log("backend db.json now stored one resume:", result);
+                setEditID(result.data.id) // to pass to preview. there then to its child Edit
 
                 if (result.status >= 200 && result.status < 300) {
                     setShowSuccess(true); // show popup
@@ -379,7 +380,7 @@ function StepperComponent({ resumeData, setResumeData, setIsSubmitted }) {
                                     <span className='btn btn-primary mb-3 me-3'>
                                         {item} {/*items in skill array*/}
                                         <button onClick={() => deleteSkill(item)} className='btn btn-primary'>
-                                            <TiDelete />
+                                            <TiDelete className='fs-3' />
                                         </button>
                                     </span>
                                 )) : ""

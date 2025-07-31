@@ -25,6 +25,8 @@ function Form() {
 
     })
 
+    const [editID, setEditID] = useState("")
+
     const [isSubmitted, setIsSubmitted] = useState(false)
     return (
         <>
@@ -34,14 +36,14 @@ function Form() {
                         <div className="row">
                             <div className="col-3"></div>
                             <div className="col-md-6">
-                                <Preview resumeData={resumeData} />
+                                <Preview resumeData={resumeData} editID={editID}/>
                             </div>
                             <div className="col-3"></div>
                         </div>
                         :
                         <div className="row">
                             <div className="col-md-6">
-                                <StepperComponent resumeData={resumeData} setResumeData={setResumeData} setIsSubmitted={setIsSubmitted}/>
+                                <StepperComponent setEditID={setEditID} resumeData={resumeData} setResumeData={setResumeData} setIsSubmitted={setIsSubmitted}/>
                             </div>
                             <div className="col-md-6">
                                 <Preview resumeData={resumeData} />

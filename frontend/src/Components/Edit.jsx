@@ -5,11 +5,61 @@ import Button from '@mui/material/Button';
 import Modal from 'react-bootstrap/Modal';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
+import { getEditResumeAPI } from '../Service/allApi';
+import { toast } from 'react-toastify';
+import { TiDelete } from "react-icons/ti";
 
-function Edit() {
+function Edit({ editID }) {
+    console.log("Edit ID:", editID);
+
+    const [editData, setEditData] = useState({
+        name: "",
+        jobTitle: "",
+        location: "",
+        email: "",
+        phoneNumber: "",
+        github: "",
+        linkedIn: "",
+        portfolio: "",
+        courseName: "",
+        college: "",
+        university: "",
+        year: "",
+        jobRole: "",
+        company: "",
+        companyLocation: "",
+        duration: "",
+        skills: [],
+        summary: "",
+        id: ""
+    })
+
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        setShow(true);
+        getEditResume();  // getEditResume function calling within handleshow function calling which is called when clikcing edit button
+    }
+
+    const getEditResume = async () => {
+        try {
+            const result = await getEditResumeAPI(editID)  //this gives the object with id eqauls to now submitted resume id
+            console.log("result", result);
+            setEditData(result.data) //result.data gives that editIDs data in object form
+
+        } catch (err) {
+            console.log("Server Error:", err);
+            toast.error("Server Error: Failed in Fetching Data, Please Try Again!!")
+
+        }
+    }
+    console.log("Edit Data is:", editData);
+
+    const deleteSkill = (itemToDelete) => {
+        setEditData({ ...editData, skills: editData.skills.filter(item => item !== itemToDelete) })
+    }
+
+
     return (
         <>
             <button className='btn btn-primary' onClick={handleShow}>
@@ -23,7 +73,7 @@ function Edit() {
                 keyboard={false}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>EDIT RESUME</Modal.Title>
+                    <Modal.Title style={{ color: 'purple' }}>EDIT RESUME</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="mt-3">
@@ -35,6 +85,9 @@ function Edit() {
                                     maxRows={4}
                                     variant="standard"
                                     fullWidth
+                                    value={editData?.name}
+                                    onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+
                                 />
                             </Grid>
                             <Grid size={12}>
@@ -43,6 +96,8 @@ function Edit() {
                                     maxRows={4}
                                     variant="standard"
                                     fullWidth
+                                    value={editData?.jobTitle}
+                                    onChange={(e) => setEditData({ ...editData, jobTitle: e.target.value })}
                                 />
                             </Grid>
                             <Grid size={12}>
@@ -51,6 +106,8 @@ function Edit() {
                                     maxRows={4}
                                     variant="standard"
                                     fullWidth
+                                    value={editData?.location}
+                                    onChange={(e) => setEditData({ ...editData, location: e.target.value })}
                                 />
                             </Grid>
 
@@ -65,6 +122,8 @@ function Edit() {
                                     maxRows={4}
                                     variant="standard"
                                     fullWidth
+                                    value={editData?.email}
+                                    onChange={(e) => setEditData({ ...editData, email: e.target.value })}
                                 />
                             </Grid>
                             <Grid size={12}>
@@ -73,6 +132,8 @@ function Edit() {
                                     maxRows={4}
                                     variant="standard"
                                     fullWidth
+                                    value={editData?.phoneNumber}
+                                    onChange={(e) => setEditData({ ...editData, phoneNumber: e.target.value })}
                                 />
                             </Grid>
                             <Grid size={12}>
@@ -81,6 +142,8 @@ function Edit() {
                                     maxRows={4}
                                     variant="standard"
                                     fullWidth
+                                    value={editData?.github}
+                                    onChange={(e) => setEditData({ ...editData, github: e.target.value })}
                                 />
                             </Grid>
                             <Grid size={12}>
@@ -89,6 +152,8 @@ function Edit() {
                                     maxRows={4}
                                     variant="standard"
                                     fullWidth
+                                    value={editData?.linkedIn}
+                                    onChange={(e) => setEditData({ ...editData, linkedIn: e.target.value })}
                                 />
                             </Grid>
                             <Grid size={12}>
@@ -97,6 +162,8 @@ function Edit() {
                                     maxRows={4}
                                     variant="standard"
                                     fullWidth
+                                    value={editData?.portfolio}
+                                    onChange={(e) => setEditData({ ...editData, portfolio: e.target.value })}
                                 />
                             </Grid>
                         </Grid>
@@ -110,6 +177,8 @@ function Edit() {
                                     maxRows={4}
                                     variant="standard"
                                     fullWidth
+                                    value={editData?.courseName}
+                                    onChange={(e) => setEditData({ ...editData, courseName: e.target.value })}
                                 />
                             </Grid>
                             <Grid size={12}>
@@ -118,6 +187,8 @@ function Edit() {
                                     maxRows={4}
                                     variant="standard"
                                     fullWidth
+                                    value={editData?.college}
+                                    onChange={(e) => setEditData({ ...editData, college: e.target.value })}
                                 />
                             </Grid>
                             <Grid size={12}>
@@ -126,6 +197,8 @@ function Edit() {
                                     maxRows={4}
                                     variant="standard"
                                     fullWidth
+                                    value={editData?.university}
+                                    onChange={(e) => setEditData({ ...editData, university: e.target.value })}
                                 />
                             </Grid>
                             <Grid size={12}>
@@ -134,6 +207,8 @@ function Edit() {
                                     maxRows={4}
                                     variant="standard"
                                     fullWidth
+                                    value={editData?.year}
+                                    onChange={(e) => setEditData({ ...editData, year: e.target.value })}
                                 />
                             </Grid>
                         </Grid>
@@ -147,6 +222,8 @@ function Edit() {
                                     maxRows={4}
                                     variant="standard"
                                     fullWidth
+                                    value={editData?.jobRole}
+                                    onChange={(e) => setEditData({ ...editData, jobRole: e.target.value })}
                                 />
                             </Grid>
                             <Grid size={12}>
@@ -155,6 +232,8 @@ function Edit() {
                                     maxRows={4}
                                     variant="standard"
                                     fullWidth
+                                    value={editData?.company}
+                                    onChange={(e) => setEditData({ ...editData, company: e.target.value })}
                                 />
                             </Grid>
                             <Grid size={12}>
@@ -163,6 +242,8 @@ function Edit() {
                                     maxRows={4}
                                     variant="standard"
                                     fullWidth
+                                    value={editData?.companyLocation}
+                                    onChange={(e) => setEditData({ ...editData, companyLocation: e.target.value })}
                                 />
                             </Grid>
                             <Grid size={12}>
@@ -171,6 +252,8 @@ function Edit() {
                                     maxRows={4}
                                     variant="standard"
                                     fullWidth
+                                    value={editData?.duration}
+                                    onChange={(e) => setEditData({ ...editData, duration: e.target.value })}
                                 />
                             </Grid>
                         </Grid>
@@ -186,20 +269,23 @@ function Edit() {
                         />
                         <Button className='btn btn-primary mt-3' variant='outlined'>ADD+</Button>
                         <div className="mt-3">
-                            <h5>Suggestions :</h5>
-                            <Button className='btn btn-primary mt-3 me-2 ' variant='outlined'>REACT</Button>
-                            <Button className='btn btn-primary mt-3 me-2 ' variant='outlined'>ANGULAR</Button>
-                            <Button className='btn btn-primary mt-3 me-2 ' variant='outlined'>NODE JS</Button>
-                            <Button className='btn btn-primary mt-3 me-2 ' variant='outlined'>EXPRESS</Button>
-                            <Button className='btn btn-primary mt-3 me-2 ' variant='outlined'>MONGODB</Button>
-                            <Button className='btn btn-primary mt-3 me-2 ' variant='outlined'>GIT</Button>
-                            <Button className='btn btn-primary mt-3 me-2 ' variant='outlined'>HTML</Button>
-                            <Button className='btn btn-primary mt-3 me-2 ' variant='outlined'>CSS</Button>
-                            <Button className='btn btn-primary mt-3 me-2 ' variant='outlined'>BOOTSTRAP</Button>
-                            <Button className='btn btn-primary mt-3 me-2 ' variant='outlined'>TAILWIND</Button>
+                            <h5>Selected Skills :</h5>
+                            <div className=''>
+                                {
+                                    editData?.skills.map((item) => (
+                                        <span className='btn btn-primary mb-3 me-3'>
+                                            {item} {/*items in skills array*/}
+                                            <button onClick={() => deleteSkill(item)} className='btn btn-primary'>
+                                                <TiDelete className='fs-3' />
+                                            </button>
+                                        </span>
+                                    ))
+                                }
+                            </div>
+
                         </div>
                         <div className="mt-3">
-                            <h5>Selected Skills:</h5>
+                            <h5>Added Skills:</h5>
                         </div>
                     </div>
                     <div className="mt-3">
@@ -212,6 +298,8 @@ function Edit() {
                                     fullWidth
                                     multiline
                                     rows={4}
+                                    value={editData?.summary}
+                                    onChange={(e) => setEditData({ ...editData, summary: e.target.value })}
                                 />
                             </Grid>
                         </Grid>

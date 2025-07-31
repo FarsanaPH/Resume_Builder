@@ -6,7 +6,7 @@ import Edit from './Edit';
 import { Link } from 'react-router-dom';
 
 
-function Preview({resumeData}) {
+function Preview({resumeData, editID}) {
   console.log("preview data:",resumeData);
   //destructure - skills=resumeData.skills
   const { skills, name, jobTitle, location, email, phoneNumber, github, linkedIn, portfolio, courseName, 
@@ -19,7 +19,7 @@ function Preview({resumeData}) {
       <div className='d-flex justify-content-end gap-3 mt-5'>
         <button className='btn btn-primary'><FaFileDownload /></button>
         <Link to={"/history"} className='btn btn-primary'><FaHistory /></Link>
-        <Edit />  {/* calling component Edit here */}
+        <Edit editID={editID} />  {/* calling Edit Component in Preview, deleteID to padd to edit */}
         <Link to={"/resumeGenerator"} className='btn btn-primary'>BACK</Link>
       </div>
 
